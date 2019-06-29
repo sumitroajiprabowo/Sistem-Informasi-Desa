@@ -2,11 +2,25 @@ from rest_framework import generics, mixins, viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from .permissions import IsOwnerOrReadOnly, IsOwnProfileOrReadOnly
-from .serializers import (ProfileAvatarSerializer,
+from .serializers import (UserSerializer, AuthTokenSerializer,
+                          ProfileAvatarSerializer,
                           ProfileSerializer, ProfileStatusSerializer)
 from .models import Profile, ProfileStatus
+from rest_framework.settings import api_settings
+
+
+class CreateUserView(generics.CreateAPIView):
+    """Create a new user in the system"""
+    serializer_class = UserSerializer
+
+
+class CreateTokenView(ObtainAuthToken):
+    """Create a new auth token for user"""
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 
 class AvatarUpdateView(generics.UpdateAPIView):
