@@ -14,11 +14,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProfileStatus',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False,
+                                        verbose_name='ID')),
                 ('status_content', models.CharField(max_length=240)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user_profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='userprofiles.Profile')),
+                ('user_profile', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='userprofiles.Profile')),
             ],
             options={
                 'verbose_name_plural': 'statuses',
