@@ -5,13 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Profile, ProfileStatus
 
 
-class ProfileAreaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Profile
-        fields = ('province', 'regency', 'district', 'village')
-
-
 class UserRegisterSerializer(serializers.ModelSerializer):
     """Serializer for the users objects"""
 
@@ -20,7 +13,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'name', 'groups', 'province',
+        fields = ('email', 'password', 'username', 'groups', 'province',
                   'regency', 'district', 'village')
         extra_kwargs = {
             'password': {
