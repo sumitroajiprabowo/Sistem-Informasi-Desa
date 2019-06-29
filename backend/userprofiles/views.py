@@ -1,8 +1,10 @@
-from rest_framework import generics, mixins, viewsets
+from rest_framework import (generics, mixins, viewsets,
+                            authentication, permissions)
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.views import ObtainAuthToken
+
 
 from .permissions import IsOwnerOrReadOnly, IsOwnProfileOrReadOnly
 from .serializers import (UserRegisterSerializer, AuthTokenSerializer,
@@ -38,13 +40,16 @@ class ProfileViewSet(mixins.UpdateModelMixin,
                      viewsets.GenericViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, IsOwnProfileOrReadOnly]
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,
+                          IsOwnProfileOrReadOnly)
     filter_backends = [SearchFilter]
     search_fields = ["city"]
 
 
 class ProfileStatusViewSet(ModelViewSet):
     serializer_class = ProfileStatusSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_queryset(self):
