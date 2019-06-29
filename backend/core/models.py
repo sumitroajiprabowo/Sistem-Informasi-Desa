@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
-from django.conf import settings
+from areacode.models import Province, Regency, District, Village
 
 
 class UserManager(BaseUserManager):
@@ -30,6 +30,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=225)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    province = models.ForeignKey(Province,
+                                 on_delete=models.CASCADE,
+                                 related_name='provinces', null=True)
+    regency = models.ForeignKey(Regency,
+                                on_delete=models.CASCADE,
+                                related_name='regencies', null=True)
+    district = models.ForeignKey(District,
+                                 on_delete=models.CASCADE,
+                                 related_name='districts', null=True)
+    village = models.ForeignKey(Village,
+                                on_delete=models.CASCADE,
+                                related_name='villages', null=True)
 
     objects = UserManager()
 
