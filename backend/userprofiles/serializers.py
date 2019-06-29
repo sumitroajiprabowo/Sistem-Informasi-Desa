@@ -12,7 +12,7 @@ class ProfileAreaSerializer(serializers.ModelSerializer):
         fields = ('province', 'regency', 'district', 'village')
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.ModelSerializer):
     """Serializer for the users objects"""
 
     def get_groups(self, obj):
