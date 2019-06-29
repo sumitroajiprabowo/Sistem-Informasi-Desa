@@ -10,6 +10,18 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,
                                 related_name='profile')
+    province = models.ForeignKey(Province,
+                                 on_delete=models.CASCADE,
+                                 related_name='provinces', null=True)
+    regency = models.ForeignKey(Regency,
+                                on_delete=models.CASCADE,
+                                related_name='regencies', null=True)
+    district = models.ForeignKey(District,
+                                 on_delete=models.CASCADE,
+                                 related_name='districts', null=True)
+    village = models.ForeignKey(Village,
+                                on_delete=models.CASCADE,
+                                related_name='villages', null=True)
     bio = models.CharField(max_length=240, blank=True)
     city = models.CharField(max_length=30, blank=True)
     avatar = models.ImageField(null=True, blank=True)
@@ -28,3 +40,16 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+
+class ProfileStatus(models.Model):
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    status_content = models.CharField(max_length=240)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "statuses"
+
+    def __str__(self):
+        return str(self.user_profile)
