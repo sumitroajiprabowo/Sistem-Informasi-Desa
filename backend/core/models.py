@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom user"""
     email = models.EmailField(max_length=225, unique=True)
-    name = models.CharField(max_length=225)
+    username = models.CharField(max_length=225)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     province = models.ForeignKey(Province,
