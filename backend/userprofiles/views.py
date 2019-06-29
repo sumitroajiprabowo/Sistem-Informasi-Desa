@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from .permissions import IsOwnerOrReadOnly, IsOwnProfileOrReadOnly
-from .serializers import (UserSerializer, AuthTokenSerializer,
+from .serializers import (UserRegisterSerializer, AuthTokenSerializer,
                           ProfileAvatarSerializer,
                           ProfileSerializer, ProfileStatusSerializer)
 from .models import Profile, ProfileStatus
@@ -14,7 +14,7 @@ from rest_framework.settings import api_settings
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
-    serializer_class = UserSerializer
+    serializer_class = UserRegisterSerializer
 
 
 class CreateTokenView(ObtainAuthToken):
