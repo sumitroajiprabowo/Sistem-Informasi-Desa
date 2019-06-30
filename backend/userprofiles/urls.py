@@ -2,10 +2,11 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import (CreateUserView, CreateTokenView,
                     AvatarUpdateView, ProfileViewSet,
-                    ProfileStatusViewSet)
+                    ProfileStatusViewSet, UserProfileViewSet)
 
 router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet)
+router.register(r"lihat", UserProfileViewSet)
 router.register(r"status", ProfileStatusViewSet, basename="status")
 
 
