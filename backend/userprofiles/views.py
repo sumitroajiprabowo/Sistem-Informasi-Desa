@@ -6,10 +6,12 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
-from .permissions import IsOwnerOrReadOnly, IsOwnProfileOrReadOnly
+from .permissions import (IsOwnerOrReadOnly, IsOwnProfileOrReadOnly,
+                          IsOwnUserOrReadOnly)
 from .serializers import (UserRegisterSerializer, AuthTokenSerializer,
-                          ProfileAvatarSerializer,
+                          UserProfileSerializer, ProfileAvatarSerializer,
                           ProfileSerializer, ProfileStatusSerializer)
+from core.models import User
 from .models import Profile, ProfileStatus
 from rest_framework.settings import api_settings
 
@@ -32,6 +34,16 @@ class AvatarUpdateView(generics.UpdateAPIView):
     def get_object(self):
         profile_object = self.request.user.profile
         return profile_object
+
+
+class UserProfileViewSet(mixins.UpdateModelMixin,
+                         mixins.ListModelMixin,
+                         mixins.RetrieveModelMixin,
+                         viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated, IsOwnUserOrReadOnly)
 
 
 class ProfileViewSet(mixins.UpdateModelMixin,
