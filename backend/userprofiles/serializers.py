@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 
+from core.models import User
 from .models import Profile, ProfileStatus
 
 
@@ -58,13 +59,26 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class ProfileSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
 
-    user = serializers.StringRelatedField(read_only=True)
     province = serializers.StringRelatedField(read_only=True)
     regency = serializers.StringRelatedField(read_only=True)
     district = serializers.StringRelatedField(read_only=True)
     village = serializers.StringRelatedField(read_only=True)
+    bio = serializers.SerializerMethodField()
+
+    def get_bio(self, obj):
+        return obj.profile.bio
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "province",
+                  "regency", "district", "village", "bio")
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField(read_only=True)
     avatar = serializers.ImageField(read_only=True)
 
     class Meta:
