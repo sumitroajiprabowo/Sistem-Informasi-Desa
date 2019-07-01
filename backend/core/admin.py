@@ -5,6 +5,9 @@ from django.utils.translation import gettext as _
 from core import models
 from areacode.models import Province, Regency, District, Village
 from userprofiles.models import Profile
+from goverment.models import (Kelembagaan, Jabatan, Pelatihan,
+                              Pemerintahan, KelembagaanJabatan,
+                              PelatihanAparatur)
 
 
 class UserAdmin(BaseUserAdmin):
@@ -33,3 +36,9 @@ admin.site.register(Regency)
 admin.site.register(District)
 admin.site.register(Village)
 admin.site.register(Profile)
+admin.site.register(Kelembagaan)
+admin.site.register(Jabatan)
+admin.site.register(Pelatihan)
+admin.site.register(Pemerintahan)
+admin.site.register(KelembagaanJabatan)
+admin.site.register(PelatihanAparatur)
