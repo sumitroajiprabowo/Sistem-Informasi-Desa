@@ -23,6 +23,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'profile'
         verbose_name_plural = 'profiles'
+        db_table = "profiles"
 
     def __str__(self):
         return self.user.email
@@ -44,6 +45,7 @@ class ProfileStatus(models.Model):
 
     class Meta:
         verbose_name_plural = "statuses"
+        db_table = "profiles_status"
 
     def __str__(self):
         return str(self.user_profile)
