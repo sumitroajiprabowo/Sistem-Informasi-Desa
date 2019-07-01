@@ -8,7 +8,7 @@ class Kelembagaan(models.Model):
 
     class Meta:
         ordering = ['id']
-        verbose_name_plural = "kelambagaan"
+        verbose_name_plural = "kelembagaan"
         db_table = "pemerintahan_kelembagaan"
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Jabatan(models.Model):
                                     related_name='kelambagaan')
 
     class Meta:
-        ordering = ['kelembagaan']
+        ordering = ['kelembagaan', 'id']
         verbose_name_plural = "jabatan"
         db_table = "pemerintahan_jabatan"
 
@@ -182,6 +182,7 @@ class Pemerintahan(models.Model):
         ('Pembina Utama', 'Pembina Utama'),
     )
     GOLONGAN_CHOICES = (
+        ('Tidak Ada', 'Tidak Ada'),
         ('I/a', 'I/a'),
         ('I/b', 'I/b'),
         ('I/c', 'I/c'),
@@ -215,8 +216,9 @@ class Pemerintahan(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,
                                 related_name='pemdes')
-    name = models.CharField(_("nama"), max_length=50)
-    niap = models.CharField(_("nomor_induk"), max_length=50)
+    name = models.CharField(_("Nama Lengkap"), max_length=50)
+    niap = models.CharField(_("Nomor Induk Aparatur Perangkat"),
+                            max_length=50)
     status_jabatan = models.CharField(max_length=10,
                                       choices=STATUS_JABATAN_CHOICES)
     no_sk = models.CharField(_("Nomer SK"), max_length=50)
@@ -283,7 +285,7 @@ class KelembagaanJabatan(models.Model):
                                         on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "Jabatan Kelambagaan"
+        verbose_name_plural = "Jabatan Kelembagaan"
         db_table = "pemerintahan_jabatan_kelembagaan"
 
     def __str__(self):
@@ -301,5 +303,3 @@ class PelatihanAparatur(models.Model):
         verbose_name_plural = "Pelatihan Aparatur"
         db_table = "pemerintahan_pelatihan_aparatur"
 
-    def __str__(self):
-        return self.pemerintah.name
