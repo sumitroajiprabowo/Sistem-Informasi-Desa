@@ -5,12 +5,13 @@ class Province(models.Model):
     """Model Database Provinsi"""
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['id']
-        db_table = "provinces"
+        verbose_name_plural = "Provinsi"
+        db_table = "area_provinces"
+
+    def __str__(self):
+        return self.name
 
 
 class Regency(models.Model):
@@ -18,12 +19,13 @@ class Regency(models.Model):
     name = models.CharField(max_length=255)
     province = models.ForeignKey(Province, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['id']
-        db_table = "regencies"
+        verbose_name_plural = "Kabupaten"
+        db_table = "area_regencies"
+
+    def __str__(self):
+        return self.name
 
 
 class District(models.Model):
@@ -31,12 +33,13 @@ class District(models.Model):
     name = models.CharField(max_length=255)
     regency = models.ForeignKey(Regency, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['id']
-        db_table = "districts"
+        verbose_name_plural = "Kecamatan"
+        db_table = "area_districts"
+
+    def __str__(self):
+        return self.name
 
 
 class Village(models.Model):
@@ -45,9 +48,10 @@ class Village(models.Model):
     name = models.CharField(max_length=255)
     district = models.ForeignKey(District, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['id']
-        db_table = "villages"
+        verbose_name_plural = "Desa"
+        db_table = "area_villages"
+
+    def __str__(self):
+        return self.name
