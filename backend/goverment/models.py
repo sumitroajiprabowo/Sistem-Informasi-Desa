@@ -6,6 +6,11 @@ from django.conf import settings
 class Kelembagaan(models.Model):
     name = models.CharField(_("Nama Kelembagaan"), max_length=50)
 
+    class Meta:
+        ordering = ['id']
+        verbose_name_plural = "kelambagaan"
+        db_table = "pemerintahan_kelembagaan"
+
     def __str__(self):
         return self.name
 
@@ -16,12 +21,22 @@ class Jabatan(models.Model):
                                     on_delete=models.CASCADE,
                                     related_name='kelambagaan')
 
+    class Meta:
+        ordering = ['kelembagaan']
+        verbose_name_plural = "jabatan"
+        db_table = "pemerintahan_jabatan"
+
     def __str__(self):
         return self.name
 
 
 class Pelatihan(models.Model):
     name = models.CharField(_("Nama Pelatihan"), max_length=150)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name_plural = "pelatihan"
+        db_table = "pemerintahan_pelatihan"
 
     def __str__(self):
         return self.name
@@ -230,8 +245,7 @@ class Pemerintahan(models.Model):
     sawah = models.PositiveIntegerField(_("Bengkok Sawah"))
     darat = models.PositiveIntegerField(_("Bengkok Darat"))
     alamat = models.CharField(_("Alamat Lengkap"), max_length=150)
-    phone = models.PhoneNumberField(_("Nomor HP"),
-                                    null=False, blank=False, unique=True)
+    phone = models.CharField(_("Nomor Handphone"), max_length=14)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES)
     suami_istri = models.CharField(_("Nama Istri/Suami"), max_length=50)
     tmpt_lhr_suami_istri = models.CharField(_("Tempat Lahir Istri/Suami"),
@@ -250,18 +264,27 @@ class Pemerintahan(models.Model):
     anak_angkat = models.PositiveIntegerField(_("Total Anak Angkat"))
     photo = models.ImageField(_("photo"), null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
+        verbose_name_plural = "pemerintahan"
+        db_table = "pemerintahan"
+
     def __str__(self):
         return self.name
 
 
 class KelembagaanJabatan(models.Model):
-    Kelembagaan = models.ManyToManyField("Kelembagaan",
+    kelembagaan = models.ManyToManyField("Kelembagaan",
                                          verbose_name=_("nama kelembagaan"))
     jabatan = models.ManyToManyField("Jabatan",
                                      verbose_name=_("nama kelembagaan"))
     pemerintahan = models.OneToOneField("Pemerintahan",
                                         verbose_name=_("pemerintahan"),
                                         on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Jabatan Kelambagaan"
+        db_table = "pemerintahan_jabatan_kelembagaan"
 
     def __str__(self):
         return self.pemerintahan.name
@@ -273,6 +296,10 @@ class PelatihanAparatur(models.Model):
     total = models.PositiveIntegerField(_("Total Pelatihan"))
     pemerintah = models.ManyToManyField("Pemerintahan",
                                         verbose_name=_("Pelatihan Aparatur"))
+
+    class Meta:
+        verbose_name_plural = "Pelatihan Aparatur"
+        db_table = "pemerintahan_pelatihan_aparatur"
 
     def __str__(self):
         return self.pemerintah.name
