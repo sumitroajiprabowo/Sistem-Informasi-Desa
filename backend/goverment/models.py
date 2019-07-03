@@ -30,6 +30,26 @@ class Jabatan(models.Model):
         return self.name
 
 
+class Pemerintahan(models.Model):
+    kelembagaan = models.ForeignKey("Kelembagaan",
+                                    verbose_name=_("nama kelembagaan"),
+                                    on_delete=models.CASCADE,)
+    jabatan = models.ForeignKey("Jabatan",
+                                verbose_name=_("nama kelembagaan"),
+                                on_delete=models.CASCADE)
+    name = models.CharField(_("Nama Lengkap"), max_length=50)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name='pemerintahan')
+
+    class Meta:
+        verbose_name_plural = "Pemerintahan"
+        db_table = "pemerintahan_jabatan_kelembagaan"
+
+    def __str__(self):
+        return self.name
+
+
 class Pelatihan(models.Model):
     name = models.CharField(_("Nama Pelatihan"), max_length=150)
 
@@ -42,7 +62,7 @@ class Pelatihan(models.Model):
         return self.name
 
 
-class Pemerintahan(models.Model):
+class ProfilePemerintahan(models.Model):
     STATUS_JABATAN_CHOICES = (
         ('Struktural', 'Struktural'),
         ('Pelaksana', 'Pelaksana'),
@@ -213,10 +233,9 @@ class Pemerintahan(models.Model):
         ('Strata III', 'Strata III'),
         ('Pendidikan Non Formal', 'Pendidikan Non Formal'),
     )
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                on_delete=models.CASCADE,
-                                related_name='pemdes')
-    name = models.CharField(_("Nama Lengkap"), max_length=50)
+    pemerintahan = models.OneToOneField("Pemerintahan",
+                                        on_delete=models.CASCADE,
+                                        related_name='pemdes')
     niap = models.CharField(_("Nomor Induk Aparatur Perangkat"),
                             max_length=50)
     status_jabatan = models.CharField(max_length=10,
@@ -231,7 +250,7 @@ class Pemerintahan(models.Model):
                                           auto_now=False, auto_now_add=False)
     pekerjaan_asal = models.CharField(max_length=100, choices=JOB_CHOICES)
     pangkat = models.CharField(max_length=25, choices=PANGKAT_CHOICES)
-    golongan = models.CharField(max_length=5, choices=GOLONGAN_CHOICES)
+    golongan = models.CharField(max_length=10, choices=GOLONGAN_CHOICES)
     tmpt_lhr = models.CharField(_("Tempat Lahir"), max_length=50)
     tgl_lhr = models.DateField(_("Tanggal Lahir"),
                                auto_now=False, auto_now_add=False)
@@ -268,38 +287,8 @@ class Pemerintahan(models.Model):
 
     class Meta:
         ordering = ['id']
-        verbose_name_plural = "pemerintahan"
+        verbose_name_plural = "Profile Pemerintahan"
         db_table = "pemerintahan"
 
     def __str__(self):
-        return self.name
-
-
-class KelembagaanJabatan(models.Model):
-    kelembagaan = models.ManyToManyField("Kelembagaan",
-                                         verbose_name=_("nama kelembagaan"))
-    jabatan = models.ManyToManyField("Jabatan",
-                                     verbose_name=_("nama kelembagaan"))
-    pemerintahan = models.OneToOneField("Pemerintahan",
-                                        verbose_name=_("pemerintahan"),
-                                        on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name_plural = "Jabatan Kelembagaan"
-        db_table = "pemerintahan_jabatan_kelembagaan"
-
-    def __str__(self):
         return self.pemerintahan.name
-
-
-class PelatihanAparatur(models.Model):
-    pelatihan = models.ManyToManyField("Pelatihan",
-                                       verbose_name=_("Jenis Pelatihan"))
-    total = models.PositiveIntegerField(_("Total Pelatihan"))
-    pemerintah = models.ManyToManyField("Pemerintahan",
-                                        verbose_name=_("Pelatihan Aparatur"))
-
-    class Meta:
-        verbose_name_plural = "Pelatihan Aparatur"
-        db_table = "pemerintahan_pelatihan_aparatur"
-
