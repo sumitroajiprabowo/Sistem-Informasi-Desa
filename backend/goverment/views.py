@@ -14,6 +14,13 @@ class KelembagaanView(viewsets.ModelViewSet):
 
 class JabatanView(viewsets.ModelViewSet):
     """Create Jabatan in the system"""
-    queryset = Jabatan.objects.all()
     serializer_class = JabatanSerializers
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = Jabatan.objects.all()
+        kelembagaan = self.request.query_params.get('kelembagaan')
+
+        if kelembagaan is not None:
+            queryset = queryset.filter(kelembagaan=kelembagaan)
+        return queryset
