@@ -65,14 +65,18 @@ class JabatanAdmin(admin.ModelAdmin):
 
 admin.site.register(Jabatan, JabatanAdmin)
 
+
 class ProfilePemerintahaninline(admin.StackedInline):
     model = ProfilePemerintahan
     can_delete = False
+
 
 class PemerintahanAdmin(admin.ModelAdmin):
     model = Pemerintahan
     list_display = ['user', 'name', 'kelembagaan', 'jabatan']
     inlines = (ProfilePemerintahaninline, )
 
+
 admin.site.register(Pemerintahan, PemerintahanAdmin)
 admin.site.register(ProfilePemerintahan)
+admin.site.register(Pelatihan)
