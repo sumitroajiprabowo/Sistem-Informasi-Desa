@@ -6,26 +6,36 @@ from core import models
 from areacode.models import Province, Regency, District, Village
 from userprofiles.models import Profile
 from goverment.models import (Kelembagaan, Jabatan, Pelatihan,
-                              Pemerintahan, KelembagaanJabatan,
-                              PelatihanAparatur)
+                              Pemerintahan, ProfilePemerintahan,
+                              )
 
 
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
-    list_display = ['email', 'username']
+    list_display = ['email', 'username', 'province', 'regency',
+                    'district', 'village', 'is_active', 'is_superuser']
+    search_fields = ('email', 'username')
+    ordering = ('district',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal Info'), {'fields': ('username',)}),
-        (
-            _('Permissions'),
-            {'fields': ('is_active', 'is_staff', 'is_superuser')}
-        ),
+        (_('Personal Info'), {'fields':
+                              ('username',)}
+         ),
+        (_('Wilayah'), {'fields':
+                        ('province', 'regency',
+                         'district', 'village')}
+         ),
+        (_('Permissions'), {'fields':
+                            ('is_active', 'is_staff',
+                             'is_superuser')}
+         ),
         (_('Important dates'), {'fields': ('last_login',)})
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')
+            'fields': ('email', 'password1', 'password2', 'groups', 'province',
+                       'regency', 'district', 'village')
         }),
     )
 
@@ -37,8 +47,32 @@ admin.site.register(District)
 admin.site.register(Village)
 admin.site.register(Profile)
 admin.site.register(Kelembagaan)
-admin.site.register(Jabatan)
-admin.site.register(Pelatihan)
-admin.site.register(Pemerintahan)
-admin.site.register(KelembagaanJabatan)
-admin.site.register(PelatihanAparatur)
+
+
+class JabatanAdmin(admin.ModelAdmin):
+    model = Jabatan
+    list_display = ['name', 'get_kelembagaan']
+
+    def get_kelembagaan(self, obj):
+        return obj.kelembagaan.name
+
+    """Allows column order sorting"""
+    get_kelembagaan.admin_order_field = 'kelembagaan'
+
+    """Renames column head"""
+    get_kelembagaan.short_description = 'Nama Kelembagaan'
+
+
+admin.site.register(Jabatan, JabatanAdmin)
+
+class ProfilePemerintahaninline(admin.StackedInline):
+    model = ProfilePemerintahan
+    can_delete = False
+
+class PemerintahanAdmin(admin.ModelAdmin):
+    model = Pemerintahan
+    list_display = ['user', 'name', 'kelembagaan', 'jabatan']
+    inlines = (ProfilePemerintahaninline, )
+
+admin.site.register(Pemerintahan, PemerintahanAdmin)
+admin.site.register(ProfilePemerintahan)
