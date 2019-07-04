@@ -3,10 +3,12 @@ from .models import Kelembagaan, Jabatan
 
 
 class KelembagaanSerializers(serializers.ModelSerializer):
+    user_kelembagaan = serializers.StringRelatedField(
+        read_only=True)
 
     class Meta:
         model = Kelembagaan
-        fields = "__all__"
+        fields = ("id", "name", "user_kelembagaan")
 
 
 class JabatanSerializers(serializers.ModelSerializer):
