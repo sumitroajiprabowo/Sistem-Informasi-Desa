@@ -22,10 +22,10 @@ class RegencyViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Regency.objects.all()
-        province_id = self.request.query_params.get('province_id')
+        province = self.request.query_params.get('province')
 
-        if province_id is not None:
-            queryset = queryset.filter(province_id=province_id)
+        if province is not None:
+            queryset = queryset.filter(province=province)
         return queryset
 
 
@@ -37,10 +37,10 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = District.objects.all()
-        regency_id = self.request.query_params.get('regency_id')
+        regency = self.request.query_params.get('regency')
 
-        if regency_id is not None:
-            queryset = queryset.filter(regency_id=regency_id)
+        if regency is not None:
+            queryset = queryset.filter(regency=regency)
         return queryset
 
 
@@ -52,8 +52,8 @@ class VillageViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Village.objects.all()
-        district_id = self.request.query_params.get('district_id')
+        district = self.request.query_params.get('district')
 
-        if district_id is not None:
-            queryset = queryset.filter(district_id=district_id)
+        if district is not None:
+            queryset = queryset.filter(district=district)
         return queryset
