@@ -5,6 +5,9 @@ from django.conf import settings
 
 class Kelembagaan(models.Model):
     name = models.CharField(_("Nama Kelembagaan"), max_length=50)
+    user_kelembagaan = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                         on_delete=models.CASCADE,
+                                         related_name='kelembagaan')
 
     class Meta:
         ordering = ['id']
