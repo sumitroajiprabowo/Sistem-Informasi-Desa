@@ -31,6 +31,7 @@ class Jabatan(models.Model):
 
 
 class Pemerintahan(models.Model):
+    # If using ManytoMany
     # kelembagaan = models.ManyToManyField("Kelembagaan",
     #                                      verbose_name=_("nama kelembagaan"),)
     # jabatan = models.ManyToManyField("Jabatan",
