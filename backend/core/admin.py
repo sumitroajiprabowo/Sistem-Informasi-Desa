@@ -6,7 +6,7 @@ from core import models
 from areacode.models import Province, Regency, District, Village
 from userprofiles.models import Profile
 from goverment.models import (Kelembagaan, Jabatan, Pelatihan,
-                              Pemerintahan, ProfilePemerintahan,
+                              ProfilePemerintahan,
                               )
 
 
@@ -71,12 +71,5 @@ class ProfilePemerintahaninline(admin.StackedInline):
     can_delete = False
 
 
-class PemerintahanAdmin(admin.ModelAdmin):
-    model = Pemerintahan
-    list_display = ['user', 'name', 'kelembagaan', 'jabatan']
-    inlines = (ProfilePemerintahaninline, )
-
-
-admin.site.register(Pemerintahan, PemerintahanAdmin)
 admin.site.register(ProfilePemerintahan)
 admin.site.register(Pelatihan)
