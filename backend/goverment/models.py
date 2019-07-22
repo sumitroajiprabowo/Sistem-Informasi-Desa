@@ -4,10 +4,7 @@ from django.conf import settings
 
 
 class Kelembagaan(models.Model):
-    name = models.CharField(_("Nama Kelembagaan"), max_length=50)
-    user_kelembagaan = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                         on_delete=models.CASCADE,
-                                         related_name='kelembagaan')
+    name = models.CharField(_("Nama Kelembagaan"), max_length=50, unique=True)
 
     class Meta:
         ordering = ['id']
@@ -19,7 +16,7 @@ class Kelembagaan(models.Model):
 
 
 class Jabatan(models.Model):
-    name = models.CharField(_("Nama_Jabatan"), max_length=50)
+    name = models.CharField(_("Nama_Jabatan"), max_length=50, unique=True)
     kelembagaan = models.ForeignKey(Kelembagaan,
                                     on_delete=models.CASCADE,
                                     related_name='kelambagaan')
@@ -34,20 +31,24 @@ class Jabatan(models.Model):
 
 
 class Pemerintahan(models.Model):
-    kelembagaan = models.ForeignKey("Kelembagaan",
-                                    verbose_name=_("nama kelembagaan"),
-                                    on_delete=models.CASCADE,)
-    jabatan = models.ForeignKey("Jabatan",
-                                verbose_name=_("nama kelembagaan"),
+    # kelembagaan = models.ManyToManyField("Kelembagaan",
+    #                                      verbose_name=_("nama kelembagaan"),)
+    # jabatan = models.ManyToManyField("Jabatan",
+    #                                  verbose_name=_("nama jabatan"),)
+    kelembagaan = models.ForeignKey("Kelembagaan", verbose_name=_
+                                    ("nama kelembagaan"),
+                                    on_delete=models.CASCADE)
+    jabatan = models.ForeignKey("Jabatan", verbose_name=_("nama jabatan"),
                                 on_delete=models.CASCADE)
     name = models.CharField(_("Nama Lengkap"), max_length=50)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE,
-                             related_name='pemerintahan')
+                             related_name='pemerintahan', null=True)
 
     class Meta:
+        unique_together = ('jabatan', 'name', )
         verbose_name_plural = "Pemerintahan"
-        db_table = "pemerintahan_jabatan_kelembagaan"
+        db_table = "pemerintahan_desa"
 
     def __str__(self):
         return self.name
@@ -291,7 +292,7 @@ class ProfilePemerintahan(models.Model):
     class Meta:
         ordering = ['id']
         verbose_name_plural = "Profile Pemerintahan"
-        db_table = "pemerintahan"
+        db_table = "pemerintahan_profile"
 
     def __str__(self):
         return self.pemerintahan.name
