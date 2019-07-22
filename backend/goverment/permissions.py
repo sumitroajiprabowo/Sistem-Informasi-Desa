@@ -15,6 +15,13 @@ class IsRegencyKelembagaan(permissions.BasePermission):
         return False
 
 
+class IsVillages(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user and request.user.groups.filter(name='desa'):
+            return True
+        return False
+
+
 class IsVillageKelembagaan(permissions.BasePermission):
     def has_objects_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
@@ -27,6 +34,15 @@ class IsDistrict(permissions.BasePermission):
         if request.user and request.user.groups.filter(name='kecamatan'):
             return True
         return False
+
+
+class IsOwnVillageGovermentsOrReadOnly(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        return obj.user == request.user
 
 
 class IsOwnProfileOrReadOnly(permissions.BasePermission):
