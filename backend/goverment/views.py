@@ -4,7 +4,9 @@ from rest_framework.permissions import (IsAuthenticated,
 from .serializers import (KelembagaanSerializers, JabatanSerializers,
                           PemerintahanSerializers)
 from .models import Kelembagaan, Jabatan, Pemerintahan
-from .permissions import IsRegencyKelembagaan
+from .permissions import (IsRegencyKelembagaan,
+                          IsOwnVillageGovermentsOrReadOnly,
+                          IsVillages)
 
 
 class KelembagaanViewsetRegency(viewsets.ModelViewSet):
@@ -67,7 +69,8 @@ class CreateVillageGovermentView(generics.CreateAPIView):
 class VillageGovermentViewSet(viewsets.ModelViewSet):
     serializer_class = PemerintahanSerializers
     queryset = Pemerintahan.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, IsOwnVillageGovermentsOrReadOnly,
+                          IsVillages, )
     authentication_classes = (authentication.TokenAuthentication,)
 
     def get_queryset(self):
