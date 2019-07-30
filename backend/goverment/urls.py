@@ -2,7 +2,8 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import (KelembagaanViewsetRegency, KelembagaanReadOnlyViewset,
                     JabatanViewSetRegency, JabatanReadOnlyViewSet,
-                    CreateVillageGovermentView, VillageGovermentViewSet)
+                    CreateVillageGovermentView, VillageGovermentTestsViewSet,
+                    VillageGovermentViewSet)
 
 router = DefaultRouter()
 router.register('kelembagaan/list', KelembagaanReadOnlyViewset,
@@ -13,8 +14,11 @@ router.register("jabatan/list", JabatanReadOnlyViewSet,
                 base_name='jabatan-list')
 router.register(r"jabatan", JabatanViewSetRegency,
                 base_name='jabatan')
-router.register("testbos", VillageGovermentViewSet,
+router.register("testbos", VillageGovermentTestsViewSet,
                 base_name='pemdes')
+router.register(r"village", VillageGovermentViewSet,
+                base_name='village')
+
 
 urlpatterns = [
     path("", include(router.urls)),
