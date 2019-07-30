@@ -1,8 +1,9 @@
 from rest_framework import viewsets, authentication, generics
+
 from rest_framework.permissions import (IsAuthenticated,
                                         )
 from .serializers import (KelembagaanSerializers, JabatanSerializers,
-                          PemerintahanSerializers)
+                          PemerintahanSerializers, VillageGovermentSerializers)
 from .models import Kelembagaan, Jabatan, Pemerintahan
 from .permissions import (IsRegencyKelembagaan,
                           IsOwnVillageGovermentsOrReadOnly,
@@ -66,7 +67,7 @@ class CreateVillageGovermentView(generics.CreateAPIView):
     serializer_class = PemerintahanSerializers
 
 
-class VillageGovermentViewSet(viewsets.ModelViewSet):
+class VillageGovermentTestsViewSet(viewsets.ModelViewSet):
     serializer_class = PemerintahanSerializers
     queryset = Pemerintahan.objects.all()
     permission_classes = (IsAuthenticated, IsOwnVillageGovermentsOrReadOnly,
@@ -84,3 +85,13 @@ class VillageGovermentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(user=user)
+
+
+class VillageGovermentViewSet(viewsets.ModelViewSet):
+    serializer_class = VillageGovermentSerializers
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Retrieve and return authentication user"""
+        return Pemerintahan.objects.filter(user=self.request.user)
