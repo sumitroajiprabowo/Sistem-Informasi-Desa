@@ -17,22 +17,6 @@ class JabatanSerializers(serializers.ModelSerializer):
 
 
 class PemerintahanSerializers(serializers.ModelSerializer):
-
-    # kelembagaan = serializers.PrimaryKeyRelatedField(
-    #     many=True,
-    #     queryset=Kelembagaan.objects.all()
-    # )
-    # jabatan = serializers.PrimaryKeyRelatedField(
-    #     many=True,
-    #     queryset=Jabatan.objects.all()
-    # )
-    # kelembagaan = KelembagaanSerializers(many=True)
-    # jabatan = JabatanSerializers(many=True)
-
-    # class Meta:
-    #     model = Pemerintahan
-    #     read_only_fields = ('id', 'user')
-    #     fields = "__all__"
     user = serializers.StringRelatedField(read_only=True)
 
     class Meta:
@@ -43,8 +27,17 @@ class PemerintahanSerializers(serializers.ModelSerializer):
 
 class VillageGovermentSerializers(serializers.ModelSerializer):
 
-    user = serializers.StringRelatedField(read_only=True)
+    kelembagaan = serializers.StringRelatedField(read_only=True)
+    jabatan = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Pemerintahan
+        fields = ('id', 'name', 'kelembagaan', 'jabatan',)
+
+
+class VillageGovermentDetailSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pemerintahan
+        read_only_fields = ('id', 'user')
         fields = "__all__"
