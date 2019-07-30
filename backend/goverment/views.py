@@ -1,9 +1,11 @@
-from rest_framework import viewsets, authentication, generics
+from rest_framework import (generics, mixins, viewsets,
+                            authentication)
 
 from rest_framework.permissions import (IsAuthenticated,
                                         )
 from .serializers import (KelembagaanSerializers, JabatanSerializers,
-                          PemerintahanSerializers, VillageGovermentSerializers)
+                          PemerintahanSerializers, VillageGovermentSerializers,
+                          VillageGovermentDetailSerializers)
 from .models import Kelembagaan, Jabatan, Pemerintahan
 from .permissions import (IsRegencyKelembagaan,
                           IsOwnVillageGovermentsOrReadOnly,
@@ -87,11 +89,27 @@ class VillageGovermentTestsViewSet(viewsets.ModelViewSet):
         serializer.save(user=user)
 
 
-class VillageGovermentViewSet(viewsets.ModelViewSet):
+class VillageGovermentViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = VillageGovermentSerializers
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnVillageGovermentsOrReadOnly,
+                          IsVillages, )
 
     def get_queryset(self):
         """Retrieve and return authentication user"""
+        return Pemerintahan.objects.filter(user=self.request.user)
+
+
+class VillageGovermentDetailViewSet(mixins.UpdateModelMixin,
+                                    mixins.ListModelMixin,
+                                    mixins.RetrieveModelMixin,
+                                    mixins.DestroyModelMixin,
+                                    viewsets.GenericViewSet):
+    queryset = Pemerintahan.objects.all()
+    serializer_class = VillageGovermentDetailSerializers
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsVillages, )
+
+    def get_queryset(self):
+        """Retrieve villages goverment data user"""
         return Pemerintahan.objects.filter(user=self.request.user)
