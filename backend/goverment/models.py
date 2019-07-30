@@ -245,49 +245,76 @@ class ProfilePemerintahan(models.Model):
                             max_length=50)
     status_jabatan = models.CharField(max_length=10,
                                       choices=STATUS_JABATAN_CHOICES)
-    no_sk = models.CharField(_("Nomer SK"), max_length=50)
+    no_sk = models.CharField(_("Nomer SK"), max_length=50, null=True,
+                             blank=True)
     tgl_kep_pengangkatan = models.DateField(
         _("Tanggal Keputusan Pengangkatan"),
-        auto_now=False, auto_now_add=False)
+        auto_now=False, auto_now_add=False, null=True,
+        blank=True)
     tgl_pelantikan = models.DateField(_("Tanggal Pelatikan"),
-                                      auto_now=False, auto_now_add=False)
+                                      auto_now=False, auto_now_add=False,
+                                      null=True, blank=True)
     akhir_masa_jabatan = models.DateField(_("Akhir Masa Jabatan"),
-                                          auto_now=False, auto_now_add=False)
-    pekerjaan_asal = models.CharField(max_length=100, choices=JOB_CHOICES)
-    pangkat = models.CharField(max_length=25, choices=PANGKAT_CHOICES)
-    golongan = models.CharField(max_length=10, choices=GOLONGAN_CHOICES)
-    tmpt_lhr = models.CharField(_("Tempat Lahir"), max_length=50)
+                                          auto_now=False, auto_now_add=False,
+                                          null=True, blank=True)
+    pekerjaan_asal = models.CharField(max_length=100, choices=JOB_CHOICES,
+                                      null=True, blank=True)
+    pangkat = models.CharField(max_length=25, choices=PANGKAT_CHOICES,
+                               null=True, blank=True)
+    golongan = models.CharField(max_length=10, choices=GOLONGAN_CHOICES,
+                                null=True, blank=True)
+    tmpt_lhr = models.CharField(_("Tempat Lahir"), max_length=50, null=True,
+                                blank=True)
     tgl_lhr = models.DateField(_("Tanggal Lahir"),
-                               auto_now=False, auto_now_add=False)
+                               auto_now=False, auto_now_add=False, null=True,
+                               blank=True)
     jk = models.CharField(_("Jenis Kelamin"),
-                          max_length=1, choices=GENDER_CHOICES)
-    agama = models.CharField(max_length=10, choices=RELIGION_CHOICES)
+                          max_length=1, choices=GENDER_CHOICES, null=True,
+                          blank=True)
+    agama = models.CharField(max_length=10, choices=RELIGION_CHOICES,
+                             null=True, blank=True)
     pendidikan = models.CharField(_("Pendidikan Akhir"),
-                                  max_length=50, choices=EDUCATION_CHOICES)
+                                  max_length=50, choices=EDUCATION_CHOICES,
+                                  null=True, blank=True)
     siltap = models.DecimalField(_("Penghasilan Tetap"),
-                                 max_digits=9, decimal_places=2)
+                                 max_digits=9, decimal_places=2, null=True,
+                                 blank=True)
     tunjangan = models.DecimalField(_("Tunjangan Penghasilan"),
-                                    max_digits=9, decimal_places=2)
-    sawah = models.PositiveIntegerField(_("Bengkok Sawah"))
-    darat = models.PositiveIntegerField(_("Bengkok Darat"))
-    alamat = models.CharField(_("Alamat Lengkap"), max_length=150)
-    phone = models.CharField(_("Nomor Handphone"), max_length=14)
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES)
-    suami_istri = models.CharField(_("Nama Istri/Suami"), max_length=50)
+                                    max_digits=9, decimal_places=2, null=True,
+                                    blank=True)
+    sawah = models.PositiveIntegerField(_("Bengkok Sawah"), null=True,
+                                        blank=True)
+    darat = models.PositiveIntegerField(_("Bengkok Darat"), null=True,
+                                        blank=True)
+    alamat = models.CharField(_("Alamat Lengkap"), max_length=150, null=True,
+                              blank=True)
+    phone = models.CharField(_("Nomor Handphone"), max_length=14, null=True,
+                             blank=True)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, null=True,
+                              blank=True)
+    suami_istri = models.CharField(_("Nama Istri/Suami"), max_length=50,
+                                   null=True, blank=True)
     tmpt_lhr_suami_istri = models.CharField(_("Tempat Lahir Istri/Suami"),
-                                            max_length=50)
+                                            max_length=50, null=True,
+                                            blank=True)
     tgl_lhr_suami_istri = models.DateField(_("Tanggal Lahir Istri/Suami"),
-                                           auto_now=False, auto_now_add=False)
+                                           auto_now=False, auto_now_add=False,
+                                           null=True, blank=True)
     agama_suami_istri = models.CharField(_("Agama Istri/Suami"),
                                          max_length=10,
-                                         choices=RELIGION_CHOICES)
+                                         choices=RELIGION_CHOICES, null=True,
+                                         blank=True)
     pendidikan_suami_istri = models.CharField(_
                                               ("Pendidikan Akhir Istri/Suami"),
                                               max_length=50,
-                                              choices=EDUCATION_CHOICES)
-    anak_kandung = models.PositiveIntegerField(_("Total Anak Kandung"))
-    anak_tiri = models.PositiveIntegerField(_("Total Anak Tiri"))
-    anak_angkat = models.PositiveIntegerField(_("Total Anak Angkat"))
+                                              choices=EDUCATION_CHOICES,
+                                              null=True, blank=True)
+    anak_kandung = models.PositiveIntegerField(_("Total Anak Kandung"),
+                                               null=True, blank=True)
+    anak_tiri = models.PositiveIntegerField(_("Total Anak Tiri"), null=True,
+                                            blank=True)
+    anak_angkat = models.PositiveIntegerField(_("Total Anak Angkat"),
+                                              null=True, blank=True)
     photo = models.ImageField(_("photo"), null=True, blank=True)
 
     class Meta:
