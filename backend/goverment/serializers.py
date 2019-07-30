@@ -29,7 +29,22 @@ class PemerintahanSerializers(serializers.ModelSerializer):
     # kelembagaan = KelembagaanSerializers(many=True)
     # jabatan = JabatanSerializers(many=True)
 
+    # class Meta:
+    #     model = Pemerintahan
+    #     read_only_fields = ('id', 'user')
+    #     fields = "__all__"
+    user = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Pemerintahan
-        read_only_fields = ('id', 'user')
+        read_only_fields = ('id', 'user',)
+        fields = ('id', 'kelembagaan', 'jabatan', 'name', 'user', )
+
+
+class VillageGovermentSerializers(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Pemerintahan
         fields = "__all__"
