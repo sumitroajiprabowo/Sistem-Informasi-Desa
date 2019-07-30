@@ -44,10 +44,10 @@ class Pemerintahan(models.Model):
     name = models.CharField(_("Nama Lengkap"), max_length=50)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE,
-                             related_name='pemerintahan', null=True)
+                             related_name='user_pemdes')
 
     class Meta:
-        unique_together = ('jabatan', 'name', )
+        # unique_together = ('jabatan', 'user', )
         verbose_name_plural = "Pemerintahan"
         db_table = "pemerintahan_desa"
 
