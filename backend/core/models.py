@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom user"""
     email = models.EmailField(max_length=225, unique=True)
-    username = models.CharField(max_length=225)
+    username = models.CharField(max_length=225, unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     province = models.ForeignKey(Province,
@@ -36,13 +36,16 @@ class User(AbstractBaseUser, PermissionsMixin):
                                  related_name='provinces', null=True)
     regency = models.ForeignKey(Regency,
                                 on_delete=models.CASCADE,
-                                related_name='regencies', null=True)
+                                related_name='regencies', null=True,
+                                blank=True)
     district = models.ForeignKey(District,
                                  on_delete=models.CASCADE,
-                                 related_name='districts', null=True)
+                                 related_name='districts', null=True,
+                                 blank=True)
     village = models.ForeignKey(Village,
                                 on_delete=models.CASCADE,
-                                related_name='villages', null=True)
+                                related_name='villages', null=True,
+                                blank=True)
 
     objects = UserManager()
 
